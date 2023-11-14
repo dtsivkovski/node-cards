@@ -3,3 +3,6 @@
 Initial templates for ExpressJS and initial setup given by: 
 - https://www.digitalocean.com/community/tutorials/how-to-use-ejs-to-template-your-node-application
     - Includes index.ejs, footer.ejs, head.ejs, header.ejs, and first iteration of server.js
+
+Connecting to MongoDB
+- https://www.mongodb.com/developer/languages/javascript/node-connect-mongodb/
