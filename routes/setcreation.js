@@ -31,14 +31,18 @@ module.exports = function(app){
 
     app.get('/set/getTester', function(req, res){
         // retrieve by setID
-        const setID = "6554167a8f9b1c2d4dd69378";
+        const setID = "655445b5632d4d0b841a6e22";
 
         // find set by id
-        const set = Set.findById(setID);
-        console.log(set);
-
-        // return set
-        res.status(200).json(set);
+        Set.findById(setID)
+        .exec()
+        .then((set) => {
+            res.status(200).json({ set });
+        })
+        .catch((error) => {
+            console.error(error);
+            res.status(500).json({ message: "An error occurred." });
+        });
     });
 
 

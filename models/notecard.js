@@ -13,9 +13,9 @@ const notecardSchema = new mongoose.Schema({
         required: true
     },
     // array of other notecard ids that this notecard is linked to
-    references: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Notecard"
+    relatedCards: [{
+        type: String,
+        required: false
     }]
 });
 
