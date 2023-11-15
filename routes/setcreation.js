@@ -29,7 +29,23 @@ module.exports = function(app){
           }
     });
 
-    app.get('/set/getTester', function(req, res){
+    app.get('/set/get', function(req, res) {
+        // retrieve by setID
+        const setID = req.query.id;
+
+        // find set by id
+        Set.findById(setID)
+        .exec()
+        .then((set) => {
+            res.status(200).json({ set });
+        })
+        .catch((error) => {
+            console.error(error);
+            res.status(500).json({ message: "An error occurred." });
+        });
+    });
+
+    app.get('/set/getTester', function(res){
         // retrieve by setID
         const setID = "655445b5632d4d0b841a6e22";
 
@@ -44,6 +60,8 @@ module.exports = function(app){
             res.status(500).json({ message: "An error occurred." });
         });
     });
+
+
 
 
 }
