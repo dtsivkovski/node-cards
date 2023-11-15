@@ -2,7 +2,7 @@
     Template from W3 Schools 
     https://www.w3schools.com/howto/howto_css_flip_card.asp
 -->
-
+<div id="mainCard">
 <div class="flip-card" title="Flip Card">
     <div class="flip-card-inner">
       <div class="flip-card-front">
@@ -13,8 +13,31 @@
       </div>
     </div>
 </div>
+</div>
 
 <style>
+
+#mainCard {
+}
+
+.floatingDiv {
+  width: 60px;
+  height: 100px;
+  background-color: #f1f1f1;
+  position: absolute;
+  z-index: 0;
+  transition: transform 0.2s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+}
+
+.floatingDiv:hover {
+  transform: scale(1.5);
+  transition: transform 0.2s ease-in-out;
+}
+
 /* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
 .flip-card {
   background-color: transparent;
@@ -22,6 +45,7 @@
   height: 500px;
   perspective: 1000px; /* Remove this if you don't want the 3D effect */
   cursor: pointer;
+  z-index: 1;
 }
 
 /* This container is needed to position the front and back side */
@@ -89,4 +113,37 @@
         }
 
     });
+
+  // Create and position floating divs around the main div
+const mainDiv = document.getElementById('mainCard');
+
+function createFloatingDivs(numDivs) {
+  const radiusX = 400; // distance from the main div
+  const radiusY = 350; // distance from the main div
+  // get position of the center of the card
+  const centerX = mainDiv.offsetLeft + mainDiv.offsetWidth / 2;
+  const centerY = mainDiv.offsetTop + mainDiv.offsetHeight / 2;
+
+  for (let i = 0; i < numDivs; i++) {
+    const angle = (i / numDivs) * Math.PI * 2 + (Math.PI / 4);
+    var x = centerX + radiusX * Math.cos(angle);
+    var y = centerY + radiusY * Math.sin(angle);
+
+    const floatingDiv = document.createElement('div');
+    floatingDiv.className = 'floatingDiv';
+    floatingDiv.innerHTML = "Term";
+    // get height and width of div, subtract from x and y to center div
+    // subtract from x and y to center div 
+    x -= 60 / 2;
+    y -= 100 / 2;
+    floatingDiv.style.left = x + 'px';
+    floatingDiv.style.top = y + 'px';
+
+    mainDiv.appendChild(floatingDiv);
+  }
+}
+
+createFloatingDivs(4); // Create 8 floating divs
+
 </script>
+
