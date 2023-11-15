@@ -5,6 +5,7 @@ const { mongoose } = require("mongoose");
 const mongoURI = process.env.mongoURI;
 console.log(mongoURI);
 var app = express();
+app.use(express.json());
 
 // include all from routes subdirectory - referenced from
 // - https://stackoverflow.com/a/6064205

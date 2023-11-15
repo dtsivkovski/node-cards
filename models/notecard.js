@@ -12,10 +12,12 @@ const notecardSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    // array of other notecard objects to reference to
+    // array of other notecard ids that this notecard is linked to
     references: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Notecard",
-        required: false
+        ref: "Notecard"
     }]
 });
+
+// export notecard model
+module.exports = mongoose.model("Notecard", notecardSchema);
