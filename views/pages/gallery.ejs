@@ -52,6 +52,8 @@
 
 function cardSelect(term, definition) {
     document.getElementById("main-card-term").innerHTML = term;
+    var id = "termcard-" + term;
+    document.getElementById(id).style.backgroundColor = '#98FFA6';
     document.querySelector('.flip-card-inner').style.transform = 'rotateY(0deg)';
     setTimeout(function() {
         document.getElementById("main-card-definition").innerHTML = definition;
@@ -89,7 +91,12 @@ function cardRelation() {
         var cardTerm = card.id.replace("termcard-", "");
         if (activeCardRelations.includes(cardTerm)) {
             card.style.backgroundColor = "#98FFA6";
-        } else {
+        }
+        else if (cardTerm == activeCard) {
+            card.style.backgroundColor = "#F6CCFF";
+        }
+        else {
+            // hide all other cards
             card.style.backgroundColor = "#f1f1f1";
         }
     }
