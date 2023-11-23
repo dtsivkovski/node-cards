@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+</style>
+<head>
+  <%- include('../partials/head'); %>
+</head>
+<body>
+
+<header>
+  <%- include('../partials/header'); %>
+</header>
+
+<main>
+  <div class="jumbotron galleryHolder" style="background-color: rgba(0,0,0,0); display: flex; align-items: center; justify-content: center;">
+    <%- include ('../partials/cardgallery'); %>
+    <div class="gallery" style="float: left">
+        <div class="galleryCard" id="termcard-Term1" onclick="cardSelect('Term1', 'Definition for card 1')">
+            Term1
+        </div>
+        <div class="galleryCard" id="termcard-Term2" onclick="cardSelect('Term2', 'Definition for card 2')">
+            Term2
+        </div>
+        <div class="galleryCard" id="termcard-Term3" onclick="cardSelect('Term3', 'Definition for card 3')">
+            Term3
+        </div> 
+    </div>
+    <div class="mainCardHolder" style="float: right">
+        <%- include ('../partials/card'); %>
+    </div>
+  </div>
+
+  <script>
+    // display card to main div on click
+  </script>
+
+</main>
+
+<style>
+.mainCardHolder {
+    padding: 0px 75px 0px 75px;
+    transition: padding 0.5s;
+}
+@media only screen and (max-width: 800px) {
+    .mainCardHolder {
+        padding: 0px;
+    }
+}
+</style>
+
+<script>
+
+function cardSelect(term, definition) {
+    document.getElementById("main-card-term").innerHTML = term;
+    document.querySelector('.flip-card-inner').style.transform = 'rotateY(0deg)';
+    setTimeout(function() {
+        document.getElementById("main-card-definition").innerHTML = definition;
+    }, 800)
+    cardRelation();
+}
+
+// dictionary of set data 
+var noteCardSet = {
+    "Term1": {
+        term: "Term1",
+        definition: "Definition for card 1",
+        relations: ["Term2"]
+    },
+    "Term2": {
+        term: "Term2",
+        definition: "Definition for card 2",
+        relations: ["Term1", "Term3"]
+    },
+    "Term3": {
+        term: "Term3",
+        definition: "Definition for card 3",
+        relations: ["Term2"]
+    }
+};
+
+// function to change background color of cards to a light green based on if they have a relation to the active card
+function cardRelation() {
+    var activeCard = document.getElementById("main-card-term").innerHTML;
+
+    var activeCardRelations = noteCardSet[activeCard].relations;
+    var cardList = document.getElementsByClassName("galleryCard");
+    for (var i = 0; i < cardList.length; i++) {
+        var card = cardList[i];
+        var cardTerm = card.id.replace("termcard-", "");
+        if (activeCardRelations.includes(cardTerm)) {
+            card.style.backgroundColor = "#98FFA6";
+        } else {
+            card.style.backgroundColor = "#f1f1f1";
+        }
+    }
+}
+
+
+</script>
+
+<footer>
+  <%- include('../partials/footer'); %>
+</footer>
+
+</body>
+</html>

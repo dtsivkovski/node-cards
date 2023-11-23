@@ -6,19 +6,16 @@
 <div class="flip-card" title="Flip Card">
     <div class="flip-card-inner">
       <div class="flip-card-front">
-        <h1 style="cursor: pointer"> Term </h1>
+        <h1 style="cursor: pointer" id="main-card-term"> Term </h1>
       </div>
       <div class="flip-card-back">
-        <h2>This is the definition for the card</h2>
+        <h2 id="main-card-definition">This is the definition for the card</h2>
       </div>
     </div>
 </div>
 </div>
 
 <style>
-
-#mainCard {
-}
 
 .floatingDiv {
   width: 60px;
@@ -69,9 +66,9 @@
 .flip-card-front, .flip-card-back {
   position: absolute;
   display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
   width: 100%;
   height: 100%;
   -webkit-backface-visibility: hidden; /* Safari */
@@ -94,56 +91,26 @@
 </style>
 
 <script>
-    // flip card on card click
-    const flipCard = document.querySelector('.flip-card');
-    var isFlipped = false;
-    flipCard.addEventListener('click', function() {
-        // transform flipcardinner 180 degrees on click
-        if (isFlipped) {
-            // flip it back if flipped
-            isFlipped = false;
-            flipCard.querySelector('.flip-card-inner').style.transform = 'rotateY(0deg)';
-            return;
-        }
-        else {
-            // flip card if not already flipped
-            isFlipped = true;
-            flipCard.querySelector('.flip-card-inner').style.transform = 'rotateY(180deg)';
-            return;
-        }
 
-    });
+// flip card on card click
+const flipCard = document.querySelector('.flip-card');
+var isFlipped = false;
+flipCard.addEventListener('click', function() {
+    // transform flipcardinner 180 degrees on click
+    if (isFlipped) {
+        // flip it back if flipped
+        isFlipped = false;
+        flipCard.querySelector('.flip-card-inner').style.transform = 'rotateY(0deg)';
+        return;
+    }
+    else {
+        // flip card if not already flipped
+        isFlipped = true;
+        flipCard.querySelector('.flip-card-inner').style.transform = 'rotateY(180deg)';
+        return;
+    }
 
-  // Create and position floating divs around the main div
-const mainDiv = document.getElementById('mainCard');
-
-function createFloatingDivs(numDivs) {
-  const radiusX = 400; // distance from the main div
-  const radiusY = 350; // distance from the main div
-  // get position of the center of the card
-  const centerX = mainDiv.offsetLeft + mainDiv.offsetWidth / 2;
-  const centerY = mainDiv.offsetTop + mainDiv.offsetHeight / 2;
-
-  for (let i = 0; i < numDivs; i++) {
-    const angle = (i / numDivs) * Math.PI * 2 + (Math.PI / 4);
-    var x = centerX + radiusX * Math.cos(angle);
-    var y = centerY + radiusY * Math.sin(angle);
-
-    const floatingDiv = document.createElement('div');
-    floatingDiv.className = 'floatingDiv';
-    floatingDiv.innerHTML = "Term";
-    // get height and width of div, subtract from x and y to center div
-    // subtract from x and y to center div 
-    x -= 60 / 2;
-    y -= 100 / 2;
-    floatingDiv.style.left = x + 'px';
-    floatingDiv.style.top = y + 'px';
-
-    mainDiv.appendChild(floatingDiv);
-  }
-}
-
-createFloatingDivs(4); // Create 8 floating divs
+});
 
 </script>
 
