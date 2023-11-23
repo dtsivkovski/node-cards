@@ -12,10 +12,14 @@
 </header>
 
 <main>
+    <div style="padding: 10px 75px 10px;">
+        <input type="checkbox" class="form-check-input" id="toggleHiding">
+        <label for="toggleHiding" class="toggleLabel"> Hide Unrelated Terms </label>
+    </div>
   <div class="jumbotron galleryHolder" style="background-color: rgba(0,0,0,0); display: flex; align-items: center; justify-content: center;">
     <%- include ('../partials/cardgallery'); %>
     <div class="gallery" style="float: left">
-        <div class="galleryCard" id="termcard-Term1" onclick="cardSelect('Term1', 'Definition for card 1')">
+        <!-- <div class="galleryCard" id="termcard-Term1" onclick="cardSelect('Term1', 'Definition for card 1')">
             Term1
         </div>
         <div class="galleryCard" id="termcard-Term2" onclick="cardSelect('Term2', 'Definition for card 2')">
@@ -23,7 +27,7 @@
         </div>
         <div class="galleryCard" id="termcard-Term3" onclick="cardSelect('Term3', 'Definition for card 3')">
             Term3
-        </div> 
+        </div>  -->
     </div>
     <div class="mainCardHolder" style="float: right">
         <%- include ('../partials/card'); %>
@@ -53,32 +57,156 @@
 function cardSelect(term, definition) {
     document.getElementById("main-card-term").innerHTML = term;
     var id = "termcard-" + term;
-    document.getElementById(id).style.backgroundColor = '#98FFA6';
     document.querySelector('.flip-card-inner').style.transform = 'rotateY(0deg)';
     setTimeout(function() {
         document.getElementById("main-card-definition").innerHTML = definition;
-    }, 800)
+    }, 300)
     cardRelation();
 }
 
+var isHiding = false;
+// check for checkbox change
+document.getElementById("toggleHiding").addEventListener("change", function() {
+    if (this.checked) {
+        // change boolean state
+        isHiding = true;
+    }
+    else {
+        // change boolean state
+        isHiding = false;
+    }
+cardRelation();
+});
+
+
 // dictionary of set data 
 var noteCardSet = {
-    "Term1": {
-        term: "Term1",
-        definition: "Definition for card 1",
-        relations: ["Term2"]
+    "Anatomy": {
+        term: "Anatomy",
+        definition: "The study of the structure of the body",
+        relations: ["Biology", "Brain", "Lungs", "Heart", "Blood"]
     },
-    "Term2": {
-        term: "Term2",
-        definition: "Definition for card 2",
-        relations: ["Term1", "Term3"]
+    "Biology": {
+        term: "Biology",
+        definition: "The study of life and living organisms",
+        relations: ["Anatomy", "Biochemistry", "Zoology", "Ornithology"]
     },
-    "Term3": {
-        term: "Term3",
-        definition: "Definition for card 3",
-        relations: ["Term2"]
-    }
+    "Brain": {
+        term: "Brain",
+        definition: "The mass of nerve tissue that is the main control center of the nervous system",
+        relations: ["Anatomy", "Blood"]
+    },
+    "Lungs": {
+        term: "Lungs",
+        definition: "The main organs of the respiratory system",
+        relations: ["Anatomy", "Blood"]
+    },
+    "Heart": {
+        term: "Heart",
+        definition: "A hollow, muscular organ that pumps blood throughout the body.",
+        relations: ["Anatomy", "Blood"]
+    },
+    "Blood": {
+        term: "Blood",
+        definition: "The fluid that carries gases, nutrients, and wastes through the body.",
+        relations: ["Anatomy", "Heart", "Lungs", "Brain"]
+    },
+    "Chemistry": {
+        term: "Chemistry",
+        definition: "The study of the properties of matter and how matter changes",
+        relations: ["Physics", "Biochemistry", "Titration", "Acid", "Base"]
+    },
+    "Physics": {
+        term: "Physics",
+        definition: "The study of matter and energy and the interactions between the two through forces and motion.",
+        relations: ["Chemistry", "Mathematics"]
+    },
+    "Biochemistry": {
+        term: "Biochemistry",
+        definition: "The study of substances and processes occurring in living things",
+        relations: ["Chemistry", "Biology"]
+    },
+    "Mathematics": {
+        term: "Mathematics",
+        definition: "The study of the properties of numbers and their manipulation",
+        relations: ["Physics", "Computer Science"]
+    },
+    "Computer Science": {
+        term: "Computer Science",
+        definition: "The study of the principles and use of computers.",
+        relations: ["Mathematics", "Java", "Python"]
+    },
+    "Ornithology": {
+        term: "Ornithology",
+        definition: "The study of birds",
+        relations: ["Biology"]
+    },
+    "Zoology": {
+        term: "Zoology",
+        definition: "The study of animals",
+        relations: ["Biology"]
+    },
+    "Java": {
+        term: "Java",
+        definition: "A high-level programming language used to create applications for Web sites.",
+        relations: ["Computer Science", "Python"]
+    },
+    "Python": {
+        term: "Python",
+        definition: "A high-level programming language used to create applications for Web sites.",
+        relations: ["Computer Science", "Java"]
+    },
+    "HTML": {
+        term: "HTML",
+        definition: "A standardized system for tagging text files to achieve font, color, graphic, and hyperlink effects on World Wide Web pages.",
+        relations: ["CSS", "JavaScript"]
+    },
+    "CSS": {
+        term: "CSS",
+        definition: "A language for describing the presentation of Web pages, including colors, layout, and fonts.",
+        relations: ["HTML", "JavaScript"]
+    },
+    "JavaScript": {
+        term: "JavaScript",
+        definition: "A scripting language used to create and control dynamic Web site content.",
+        relations: ["HTML", "CSS"]
+    },
+    "Titration": {
+        term: "Titration",
+        definition: "A solution of known concentration is used to determine the concentration of another solution.",
+        relations: ["Chemistry", "Acid", "Base"]
+    },
+    "Acid": {
+        term: "Acid",
+        definition: "A substance that increases the hydrogen ion concentration of a solution.",
+        relations: ["Chemistry", "Base", "Titration"]
+    },
+    "Base": {
+        term: "Base",
+        definition: "A substance that decreases the hydrogen ion concentration in a solution.",
+        relations: ["Chemistry", "Acid", "Titration"]
+    },
 };
+
+// function to populate card gallery with cards from dictionary
+function populateGallery() {
+    var gallery = document.getElementsByClassName("gallery")[0];
+
+    for (var card in noteCardSet) {
+        var cardDiv = document.createElement("div");
+        cardDiv.className = "galleryCard";
+        cardDiv.id = "termcard-" + noteCardSet[card].term;
+        cardDiv.innerHTML = noteCardSet[card].term;
+        cardDiv.setAttribute("onclick", "cardSelect('" + noteCardSet[card].term + "', '" + noteCardSet[card].definition + "')");
+        gallery.appendChild(cardDiv);
+    }
+
+    // set first card as main card's term and definition
+    document.getElementById("main-card-term").innerHTML = noteCardSet[Object.keys(noteCardSet)[0]].term;
+    document.getElementById("main-card-definition").innerHTML = noteCardSet[Object.keys(noteCardSet)[0]].definition;
+}
+
+populateGallery();
 
 // function to change background color of cards to a light green based on if they have a relation to the active card
 function cardRelation() {
@@ -90,14 +218,26 @@ function cardRelation() {
         var card = cardList[i];
         var cardTerm = card.id.replace("termcard-", "");
         if (activeCardRelations.includes(cardTerm)) {
-            card.style.backgroundColor = "#98FFA6";
+            card.style.display = "flex";
+            card.style.backgroundColor = "#A9FFDD";
+            card.style.transform = "scale(1)";
         }
         else if (cardTerm == activeCard) {
-            card.style.backgroundColor = "#F6CCFF";
+            card.style.display = "flex";
+            card.style.backgroundColor = "#12EAA9";
+            card.style.transform = "scale(1)";
         }
         else {
-            // hide all other cards
+            // scale all other cards down
+            if (isHiding) {
+                card.style.display = "none";
+            }
+            else {
+                card.style.display = "flex";
+            }
             card.style.backgroundColor = "#f1f1f1";
+            card.style.transform = "scale(0.75)";
+
         }
     }
 }
