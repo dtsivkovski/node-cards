@@ -17,7 +17,7 @@ const setSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    // array of notecard ids that this set is linked to
+    // array of notecards that this set has
     notecards: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Notecard"

@@ -18,16 +18,7 @@
     </div>
   <div class="jumbotron galleryHolder" style="background-color: rgba(0,0,0,0); display: flex; align-items: center; justify-content: center;">
     <%- include ('../partials/gallerystyling'); %>
-    <div class="gallery" style="float: left">
-        <!-- <div class="galleryCard" id="termcard-Term1" onclick="cardSelect('Term1', 'Definition for card 1')">
-            Term1
-        </div>
-        <div class="galleryCard" id="termcard-Term2" onclick="cardSelect('Term2', 'Definition for card 2')">
-            Term2
-        </div>
-        <div class="galleryCard" id="termcard-Term3" onclick="cardSelect('Term3', 'Definition for card 3')">
-            Term3
-        </div>  -->
+    <div class="gallery" style="float: left" id="term-card-gallery">
     </div>
     <div class="mainCardHolder" style="float: right">
         <%- include ('../partials/card'); %>
@@ -190,7 +181,7 @@ var noteCardSet = {
 
 // function to populate card gallery with cards from dictionary
 function populateGallery() {
-    var gallery = document.getElementsByClassName("gallery")[0];
+    var gallery = document.getElementById("term-card-gallery");
 
     for (var card in noteCardSet) {
         var cardDiv = document.createElement("div");
