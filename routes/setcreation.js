@@ -1,5 +1,6 @@
 const { set } = require("mongoose");
 const Set = require("../models/set");
+const Notecard = require("../models/notecard");
 
 module.exports = function(app){
 
@@ -62,7 +63,22 @@ module.exports = function(app){
     });
 
     app.get('/set/:setID/edit', function(req, res){
-        res.render('pages/editset.ejs');
+        // get set json from id
+        const setID = req.params.setID;
+        Set.findById(setID)
+        .populate('notecards').exec()
+        .then((set) => {
+            // console.log(set)
+            const setData = JSON.stringify(set);
+            console.log(setData);
+            // console.log(setData);
+            // const setData2 = JSON.parse(setData);
+            res.render('pages/editset.ejs', {setData});
+        })
+        .catch((error) => {
+            console.error(error);
+            res.status(500).json({ message: "An error has occurred. " });
+        });
     });
 
     // routes for set creation
@@ -87,7 +103,7 @@ module.exports = function(app){
           }
     });
 
-    app.post('set/:setID/addCard', function(req, res){
+    app.post('/set/:setID/addCard', function(req, res){
         // get setID
         const setID = req.params.setID;
 
@@ -113,20 +129,37 @@ module.exports = function(app){
         });
     });
 
-    app.post('set/:setID/deleteCard', function(req, res){
+    app.post('/set/:setID/deleteCard', function(req, res){
         // get setID
         const setID = req.params.setID;
 
         // get card info
-        const term = req.body.term;
-        const definition = req.body.definition;
+        const cardID = req.body.cardID;
 
         // find notecard
-        Notecard.findOne({term: term, definition: definition})
+        Notecard.findById(cardID)
         .exec()
         .then((notecard) => {
-            // delete notecard
-            notecard.delete();
+            // get id of notecard
+            console.log(notecard);
+            notecard.deleteOne();
+            // remove it from the set
+            Set.findOneAndUpdate(
+                { _id: setID },
+                { $pull: { notecards: cardID } },
+                { new: true }, // To return the updated Set document
+                )
+                .then(updatedSet => {
+                    if (updatedSet) {
+                    console.log(`Removed notecard ${cardID} from Set ${setID}`);
+                    console.log(updatedSet);
+                    } else {
+                    console.log(`Set with ID ${setID} not found`);
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                });
             res.status(200).json({ message: "Notecard deleted successfully. " });
         })
         .catch((error) => {
@@ -135,7 +168,7 @@ module.exports = function(app){
         });
     });
 
-    app.post('set/:setID/addRelation', function(req, res){
+    app.post('/set/:setID/addRelation', function(req, res){
         // get setID
         const setID = req.params.setID;
 

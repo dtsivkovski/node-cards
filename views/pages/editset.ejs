@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+</style>
+<head>
+  <%- include('../partials/head'); %>
+  <div id="setData" style="display: none;"><%= setData %></div>
+</head>
+<body>
+
+<style>
+    td {
+        padding: 10px;
+    }
+
+    .btn-primary {
+        background-color: #1baa7f;
+        border-color: #1baa7f;
+    }
+    .btn-primary:hover {
+        background-color: #25c494;
+        border-color: #25c494;
+    }
+    .form-control:focus {
+        color: #495057;
+        background-color: #fff;
+        border-color: #80ffc4;
+        outline: 0;
+        box-shadow: 0 0 0 .2rem rgba(0, 255, 166, 0.25)
+    }
+    .rform {
+        border-radius: 1rem !important;
+    }
+
+
+</style>
+
+<header>
+  <%- include('../partials/header'); %>
+</header>
+
+<main>
+  <div class="jumbotron" style="background-color: rgba(0,0,0,0); display: block; align-items: center; justify-content: center;">
+    <h1 id="setName"></h1>
+    <p id="setDescription"></p>
+    <table id="termsTable">
+        <tr>
+            <th>Term</th>
+            <th>Definition</th>
+        </tr>
+        <tr>
+            <td><input type="text" class="form-control rform" id="term1" name="term1" placeholder="Enter new term"></td>
+            <td><input type="text" class="form-control rform" id="definition1" name="definition1" placeholder="Enter new definition"></td>
+            <td>
+                <button type="button" class="btn btn-primary rform" onclick="addTerm()"><i class="fa-solid fa-plus" style="color: #ffffff;"></i></button>
+            </td>
+        </tr>
+    </table>
+  </div>
+</main>
+
+<script>
+// get set data from server
+const setInfoFromServer = JSON.parse(document.getElementById("setData").innerHTML);
+console.log(setInfoFromServer);
+
+// set name and description
+document.getElementById("setName").innerHTML = setInfoFromServer.name;
+document.getElementById("setDescription").innerHTML = setInfoFromServer.description;
+
+// set terms table
+var termsTable = document.getElementById("termsTable");
+
+// populate table with note cards
+for (var i = 0; i < setInfoFromServer.notecards.length; i++) {
+    var card = setInfoFromServer.notecards[i];
+    var row = termsTable.insertRow(i+1);
+    var termCell = row.insertCell(0);
+    var definitionCell = row.insertCell(1);
+    termCell.innerHTML = card.term;
+    definitionCell.innerHTML = card.definition;
+    var deleteCell = row.insertCell(2);
+    deleteCell.innerHTML = '<button type="button" class="btn btn-primary rform" style="background-color: red; border-color: red" onclick="deleteTerm(\'' + card._id + '\')"><i class="fa-solid fa-trash" style="color: #ffffff;"></i></button>';
+}
+
+
+function addTerm() {
+    const term = document.getElementById("term1").value;
+    const definition = document.getElementById("definition1").value;
+    const setID = setInfoFromServer._id;
+
+    const body = {
+        "term": term,
+        "definition": definition,
+    }
+
+    fetch('/set/' + setID + '/addCard', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        window.location.href = "/set/" + setID + '/edit';
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+}
+
+function deleteTerm(cardID) {
+    const setID = setInfoFromServer._id;
+
+    const body = {
+        "cardID": cardID,
+    }
+
+    fetch('/set/' + setID + '/deleteCard', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        window.location.href = "/set/" + setID + '/edit';
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+}
+
+</script>

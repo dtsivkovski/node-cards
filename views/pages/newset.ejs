@@ -14,7 +14,7 @@
 <main>
   <div class="jumbotron" style="background-color: rgba(0,0,0,0); display: block; align-items: center; justify-content: center;">
     <h1>New Set</h1>
-    <form method="POST">
+    <form>
       <div class="form-group">
         <label for="setname">Set Name</label>
         <input type="text" class="form-control" id="setname" name="setname" placeholder="Enter set name">
@@ -32,8 +32,8 @@
       var setname = document.getElementById("setname").value;
       var setdescription = document.getElementById("setdescription").value;
       var set = {
-        "setname": setname,
-        "setdescription": setdescription
+        "name": setname,
+        "description": setdescription
       }
       console.log(set);
 
