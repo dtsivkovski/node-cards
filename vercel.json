@@ -16,7 +16,7 @@
     "api": {
       "runtime": "nodejs14.x",
       "memory": 512,
-      "includeFiles": "views/pages/**"  // Include your views/pages directory
+      "includeFiles": "views/pages/**"
     }
   }
 }
