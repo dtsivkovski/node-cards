@@ -14,6 +14,7 @@ require('./routes')(app);
 
 // set the view engine to ejs
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views', 'pages'));
 
 mongoose.connect(mongoURI);
 mongoose.connection.on("connected", () => {
